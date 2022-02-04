@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
-import App from './App';
+import App from './pages/App';
 import Wallet from './components/wallet'
 ReactDOM.render(
   <BrowserRouter>

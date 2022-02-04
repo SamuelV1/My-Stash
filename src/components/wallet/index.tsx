@@ -1,12 +1,7 @@
-import React, {useState, ChangeEvent} from 'react';
+// imports
+import React, {useState, useEffect} from 'react';
+import localforage from 'localforage';
 
-interface FormElements extends HTMLFormControlsCollection {
-    yourInputName: HTMLInputElement
-}
-
-interface YourFormElement extends HTMLFormElement {
-   readonly elements: FormElements
-}
 
  function Wallet() {
 
@@ -18,18 +13,31 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
 	.then(el => {console.log(el)})
 
 }
+ */
 
-gatherData() */
+
+  // checka o local base e se não tiver aulas cadastradas seta as aulas
+    useEffect(() => {
+        async function start(){
+            const StoreData = await localforage.getItem('Coins')
+
+        }
+
+        start()
+
+      }, [])
+
+
 
  function addCoin(e: React.SyntheticEvent){
-e.preventDefault()
+	e.preventDefault()
 
-const target = e.target as typeof e.target & {
-      coin: { value: string };
-    };
-    const email = target.coin.value
-console.log(email," foi adicionado")
-}
+	const target = e.target as typeof e.target & {
+      	coin: { value: string };
+    		};
+    	const email = target.coin.value
+	console.log(email," foi adicionado")
+ }
 
   return (
     <div className="App">
@@ -47,6 +55,10 @@ console.log(email," foi adicionado")
 		value='pesquisar'
 		/>
     	</form>
+    	<div>
+    	<h1>COINS:</h1>
+
+    	</div>
     </div>
   );
 }
