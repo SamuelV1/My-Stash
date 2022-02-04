@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useState, ChangeEvent} from 'react';
 
+interface FormElements extends HTMLFormControlsCollection {
+    yourInputName: HTMLInputElement
+}
 
+interface YourFormElement extends HTMLFormElement {
+   readonly elements: FormElements
+}
 
  function Wallet() {
 
+const [Coins, setCoins] = useState('')
 /*async function gatherData(){
 // https://api.coingecko.com/api/v3/coins/bitcoin
 await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
@@ -14,9 +21,14 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
 
 gatherData() */
 
-function addCoin(e: React.FormEvent<HTMLFormElement>){
-console.log("bitcoin adicionado")
-e.preventDefault();
+ function addCoin(e: React.SyntheticEvent){
+e.preventDefault()
+
+const target = e.target as typeof e.target & {
+      coin: { value: string };
+    };
+    const email = target.coin.value
+console.log(email," foi adicionado")
 }
 
   return (
@@ -27,6 +39,7 @@ e.preventDefault();
     		placeholder='Coin ID'
     		type='text'
     		name='coin'
+
     		/>
     		<label htmlFor='coin'> you can find coins id in <a href='google.com'>CoinGecko</a> </label>
 		<input
