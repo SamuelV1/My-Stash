@@ -5,12 +5,6 @@ interface collection {
   WalletName: string,
   coins: object,
 }
-const Initialfiles: collection =
-{
-    WalletName: "placeholder",
-    coins: {},
-    
-}
 
 function App() {
   const [localWallet, setlocal] = useState<collection[]>()
@@ -27,8 +21,8 @@ function App() {
 
 
     if (localWallet) {
-      localWallet.concat(data)
-      localforage.setItem('stashWallet', localWallet)
+     let walletArray = localWallet.concat(data)
+      localforage.setItem('stashWallet', walletArray)
     } else console.log("não sei bixo")
 
 
