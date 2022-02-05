@@ -1,11 +1,22 @@
 // imports
 import React, {useState, useEffect} from 'react';
 import localforage from 'localforage';
+import { useParams } from 'react-router-dom';
 
+type RoomParams = {
+    wallet: string;
+}
+interface collection {
+	WalletName: string,
+	coins: object,
+  }
+  
 
  function Wallet() {
 
-const [Coins, setCoins] = useState('')
+const [Coins, setCoins] = useState()
+
+const { wallet } = useParams<RoomParams>();
 /*async function gatherData(){
 // https://api.coingecko.com/api/v3/coins/bitcoin
 await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
@@ -19,7 +30,13 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
   // checka o local base e se não tiver aulas cadastradas seta as aulas
     useEffect(() => {
         async function start(){
-            const StoreData = await localforage.getItem('Coins')
+			const StoreData = await localforage.getItem<collection[]>('stashWallet')
+			if (StoreData) {  
+			let MyWallet = StoreData.find(o => o.WalletName === wallet);
+			console.log(MyWallet?.coins)
+			
+			}
+	  
 
         }
 
@@ -56,7 +73,7 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
 		/>
     	</form>
     	<div>
-    	<h1>COINS:</h1>
+    	<h3>bem vindo a {wallet}</h3>
 
     	</div>
     </div>

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage'
 
+interface Product {
+  CoinName: string;
+  price: string;
+}
 interface collection {
   WalletName: string,
-  coins: object,
+  coins: Product[],
 }
+
 const initialwallet = {
-WalletName: "placeholder",
-coins: {}
+WalletName: "",
+coins: []
 }
 
 function App() {
   const [localWallet, setlocal] = useState<collection[]>([initialwallet])
 
-  const [walletName, setWallet] = useState()
   async function createWallet(e: React.SyntheticEvent) {
    
     e.preventDefault()
@@ -26,10 +30,9 @@ function App() {
 
     let data = [{
       WalletName: newWalletName,
-      coins: {
-        bitcoin: "preço",
-        etherun: "preço"
-      }
+      coins: [{CoinName:"a" , price: "40"}, {CoinName: "b", price:"40"}]
+      
+      
     }]
 
 

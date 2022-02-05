@@ -8,7 +8,7 @@ ReactDOM.render(
       <Routes>
         <Route  path="/" element={<App />}>
         </Route>
-        <Route  path="/33" element={<Wallet />}>
+        <Route  path="/:wallet" element={<Wallet />}>
         </Route>
       </Routes>
     </BrowserRouter>,
