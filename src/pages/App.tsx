@@ -5,14 +5,27 @@ interface collection {
   WalletName: string,
   coins: object,
 }
+const initialwallet = {
+WalletName: "placeholder",
+coins: {}
+}
 
 function App() {
-  const [localWallet, setlocal] = useState<collection[]>()
+  const [localWallet, setlocal] = useState<collection[]>([initialwallet])
 
-  async function createWallet() {
+  const [walletName, setWallet] = useState()
+  async function createWallet(e: React.SyntheticEvent) {
    
+    e.preventDefault()
+  
+    const target = e.target as typeof e.target & {
+          wallet: { value: string };
+          };
+        const newWalletName = target.wallet.value
+    
+
     let data = [{
-      WalletName: "mining233",
+      WalletName: newWalletName,
       coins: {
         bitcoin: "preço",
         etherun: "preço"
@@ -22,11 +35,12 @@ function App() {
 
     if (localWallet) {
      let walletArray = localWallet.concat(data)
-      localforage.setItem('stashWallet', walletArray)
-    } else console.log("não sei bixo")
-
-
+     await localforage.setItem('stashWallet', walletArray)
+      setlocal(walletArray)
+      console.log("novac arteira criada: ", walletArray)
+    } else localforage.setItem('stashWallet', [data])
   }
+
   useEffect(() => {
     async function start() {
       const StoreData = await localforage.getItem<collection[]>('stashWallet')
@@ -43,9 +57,23 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={createWallet}>Criar Nova carteira</button>
+      <form onSubmit={createWallet}>
+    		<input
+    		required
+    		placeholder='New Wallet Name'
+    		type='text'
+    		name='wallet'
 
-      <div> </div>
+    		/>
+    		<label htmlFor='wallet'> Create New Wallet </label>
+		<input
+		type='submit'
+		value='pesquisar'
+		/>
+    	</form>
+      <div>{localWallet.length >= 1 ? (localWallet.map((file: collection, idx) => (
+                           <h4 key={idx}>{file.WalletName}</h4>
+                        ))) :  <h2>Não achamos nada</h2>} </div>
     </div>
   );
 }
