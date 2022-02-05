@@ -16,11 +16,15 @@ interface Product {
 	coins: Product[],
   }
   
-  
+  const initialwallet = {
+	WalletName: "",
+	id: "0",
+	coins: []
+	}
 
  function Wallet() {
 
-const [Coins, setCoins] = useState()
+const [Coins, setCoins] = useState<collection[]>([initialwallet])
 
 const { wallet } = useParams<RoomParams>();
 /*async function gatherData(){
@@ -33,17 +37,16 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
  */
 
 
-  // checka o local base e se não tiver aulas cadastradas seta as aulas
+  
     useEffect(() => {
         async function start(){
 			const StoreData = await localforage.getItem<collection[]>('stashWallet')
 			if (StoreData) {  
 			let MyWallet = StoreData.find(o => o.id === wallet);
 			console.log(MyWallet?.coins)
-			
+			setCoins(StoreData)
 			}
 	  
-
         }
 
         start()
@@ -52,14 +55,24 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
 
 
 
- function addCoin(e: React.SyntheticEvent){
+ async function addCoin(e: React.SyntheticEvent){
 	e.preventDefault()
 
 	const target = e.target as typeof e.target & {
       	coin: { value: string };
     		};
-    	const email = target.coin.value
-	console.log(email," foi adicionado")
+    	const CoinName = target.coin.value
+
+		// 
+		const StoreData = await localforage.getItem<collection[]>('stashWallet')
+	let objIndex = Coins.findIndex((obj => obj.id === wallet));
+			if(StoreData){
+				let storage = StoreData
+				 storage[objIndex].coins.push({CoinName:`CoinName` , price: "6565"})
+				console.log(storage)
+				await localforage.setItem('stashWallet', storage)
+			}
+	
  }
 
   return (
