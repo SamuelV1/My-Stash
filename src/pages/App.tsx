@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import localforage from 'localforage'
+import { v4 as uuidv4 } from 'uuid'
 
 interface Product {
   CoinName: string;
@@ -7,16 +9,19 @@ interface Product {
 }
 interface collection {
   WalletName: string,
+  id: string,
   coins: Product[],
 }
 
 const initialwallet = {
 WalletName: "",
+id: "0",
 coins: []
 }
 
 function App() {
   const [localWallet, setlocal] = useState<collection[]>([initialwallet])
+ const history = useNavigate();
 
   async function createWallet(e: React.SyntheticEvent) {
    
@@ -30,6 +35,7 @@ function App() {
 
     let data = [{
       WalletName: newWalletName,
+      id: uuidv4(),
       coins: [{CoinName:"a" , price: "40"}, {CoinName: "b", price:"40"}]
       
       
@@ -40,7 +46,6 @@ function App() {
      let walletArray = localWallet.concat(data)
      await localforage.setItem('stashWallet', walletArray)
       setlocal(walletArray)
-      console.log("novac arteira criada: ", walletArray)
     } else localforage.setItem('stashWallet', [data])
   }
 
@@ -48,7 +53,6 @@ function App() {
     async function start() {
       const StoreData = await localforage.getItem<collection[]>('stashWallet')
       if (StoreData) {
-        console.log("informações guardadas: ",StoreData)
         setlocal(StoreData)
       }
 
@@ -57,6 +61,9 @@ function App() {
     start()
 
   }, [])
+  function clickHandler(string: string){
+    history(`/${string}`)
+  }
 
   return (
     <div className="App">
@@ -75,7 +82,7 @@ function App() {
 		/>
     	</form>
       <div>{localWallet.length >= 1 ? (localWallet.map((file: collection, idx) => (
-                           <h4 key={idx}>{file.WalletName}</h4>
+                           <h4 onClick={() => clickHandler(file.id)} key={idx}>{file.WalletName}</h4>
                         ))) :  <h2>Não achamos nada</h2>} </div>
     </div>
   );

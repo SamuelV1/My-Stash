@@ -6,10 +6,16 @@ import { useParams } from 'react-router-dom';
 type RoomParams = {
     wallet: string;
 }
-interface collection {
-	WalletName: string,
-	coins: object,
+interface Product {
+	CoinName: string;
+	price: string;
   }
+  interface collection {
+	WalletName: string,
+	id: string,
+	coins: Product[],
+  }
+  
   
 
  function Wallet() {
@@ -32,7 +38,7 @@ await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
         async function start(){
 			const StoreData = await localforage.getItem<collection[]>('stashWallet')
 			if (StoreData) {  
-			let MyWallet = StoreData.find(o => o.WalletName === wallet);
+			let MyWallet = StoreData.find(o => o.id === wallet);
 			console.log(MyWallet?.coins)
 			
 			}
