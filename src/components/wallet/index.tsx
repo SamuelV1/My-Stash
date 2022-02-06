@@ -29,14 +29,25 @@ function Wallet() {
 	const [localWallet, setLocal] = useState<collection>(initialwallet)
 
 	const { wallet } = useParams<RoomParams>();
-	/*async function gatherData(){
+	
+	async function gatherData(coinNAme: string){
 	// https://api.coingecko.com/api/v3/coins/bitcoin
 	await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
 		.then(response => response.json())
 		.then(el => {console.log(el)})
 	
+		/*  lugares que eu tenho que ir pra pegar minhas informações:
+		mudanças de preço nas ultimas 24
+		el.market_data.price_change_percentage_24h 
+		 preço atual em usd:
+		 el.market_data.current_price.usd
+		 
+		 simbolo do coin : el.symbol
+		 nome do coin: el.name
+		 imagem do coin: el.image.small
+		*/
 	}
-	 */
+	 
 
 
 
@@ -67,7 +78,7 @@ function Wallet() {
 			coin: { value: string };
 		};
 		const CoinName = target.coin.value
-
+		gatherData(CoinName)
 		// 
 		const StoreData = await localforage.getItem<collection[]>('stashWallet')
 		let objIndex = Coins.findIndex((obj => obj.id === wallet));
