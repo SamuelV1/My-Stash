@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { createFalse } from 'typescript';
 
 
 ChartJS.register(
@@ -24,9 +25,30 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  scales: {
+    yAxes: {
+      gridLines: {
+        display: false,
+        color: "#382842",
+      },
+      ticks: {
+          beginAtZero: true,
+          display: false
+      }
+    },
+    xAxes: {
+      gridLines: {
+        display: false,
+        color: "#382842"
+      },
+      ticks: {
+          display: false
+      }
+    },
+  },
   plugins: {
     legend: {
-      position: 'top' as const,
+      display: false
     },
     title: {
       display: false,
@@ -35,21 +57,20 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['old',"", ""];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: 'Dataset 1',
-      data: [40,40,10,20],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      data: [40,40,10],
+      borderColor: '#df7c05',
+      backgroundColor: 'rgba(153, 202, 5, 0.5)',
     },
     {
-      label: 'Dataset 2',
-      data: [40,40,10,20],
-      borderColor: 'rgb(53, 162, 235)',
+    
+      data: [40,30,5],
+      borderColor: '#df7c05',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
