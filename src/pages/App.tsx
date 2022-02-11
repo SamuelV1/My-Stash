@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import localforage from 'localforage'
 import { v4 as uuidv4 } from 'uuid'
-
-interface Product {
-  CoinName: string;
-  price: string;
-}
+// interface imports 
+import {Product} from '../components/wallet/index'
+import {Graph} from '../components/graph/index'
 interface collection {
   WalletName: string,
   id: string,
@@ -36,7 +34,7 @@ function App() {
     let data = [{
       WalletName: newWalletName,
       id: uuidv4(),
-      coins: [{CoinName:"a" , price: "40"}, {CoinName: "b", price:"40"}]
+      coins: []
       
       
     }]
@@ -67,6 +65,7 @@ function App() {
 
   return (
     <div className="App">
+      
       <form onSubmit={createWallet}>
     		<input
     		required

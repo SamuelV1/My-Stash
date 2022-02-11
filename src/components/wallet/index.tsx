@@ -2,19 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useParams } from 'react-router-dom';
+// interfaces import
+
 
 type RoomParams = {
 	wallet: string;
 }
-interface Product {
+export interface Product {
 	CoinName: string;
 	price: string;
 	image: string;
 	symbol: string;
-	price_change_24h:string;
+	price_change_24h: string;
 
 }
-interface collection {
+export interface collection {
 	WalletName: string,
 	id: string,
 	coins: Product[],
@@ -31,12 +33,12 @@ function Wallet() {
 
 	const [Coins, setCoins] = useState<collection[]>([initialwallet])
 
-	
+
 	const [localWallet, setLocal] = useState<collection>(initialwallet)
 
 	const { wallet } = useParams<RoomParams>();
-	
-	
+
+
 
 
 	useEffect(() => {
@@ -66,34 +68,38 @@ function Wallet() {
 			coin: { value: string };
 		};
 		const CoinName = target.coin.value
-	
+
 		// 
 		const StoreData = await localforage.getItem<collection[]>('stashWallet')
 		let objIndex = Coins.findIndex((obj => obj.id === wallet));
 		if (StoreData) {
 			// add the new coin to the localStorage
 			let storage = StoreData
-			// test code
-			await fetch('https://api.coingecko.com/api/v3/coins/bitcoin')
-		.then(response => response.json())
-		.then(el => {
-			const data: Product = {
-				CoinName: el.name,
-				price: el.market_data.current_price.usd,
-				image: el.image.small,
-				symbol: el.symbol,
-				price_change_24h: el.market_data.price_change_percentage_24h,
-			}
-			storage[objIndex].coins.push(data)
-			
-		 })
+			// remember to add a error handler
+			await fetch(`https://api.coingecko.com/api/v3/coins/${CoinName}`)
+				.then(response => response.json())
+				.then(el => {
+					if (el.error) {
+						alert("coin não encontrado")
+						console.log(el)
+					} else {
+						const data: Product = {
+							CoinName: el.name,
+							price: el.market_data.current_price.usd,
+							image: el.image.small,
+							symbol: el.symbol,
+							price_change_24h: el.market_data.price_change_percentage_24h,
+						}
+						storage[objIndex].coins.push(data)
+					}
+				})
 
 			await localforage.setItem('stashWallet', storage)
 			// add the coin in the local wallet
 			let MyWallet = StoreData.find(o => o.id === wallet);
 			if (MyWallet) {
 				setLocal(MyWallet)
-				
+
 			}
 		}
 
@@ -119,9 +125,9 @@ function Wallet() {
 				<h3>bem vindo a {wallet}</h3>
 
 				<div>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
-                           <h4  key={idx}>{file.CoinName} <img src={file.image} alt="Coin Icon" /> <p>{file.price}</p> </h4>
-						  
-                        ))) :  <h2>Não achamos nada</h2>} </div>
+					<h4 key={idx}>{file.CoinName} <img src={file.image} alt="Coin Icon" /> <p>{file.price}</p> </h4>
+
+				))) : <h2>Não achamos nada</h2>} </div>
 			</div>
 		</div>
 	);
