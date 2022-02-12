@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useParams } from 'react-router-dom';
 // interfaces import
-
+import {Graph} from "../graph/index"
 
 type RoomParams = {
 	wallet: string;
@@ -13,7 +13,7 @@ export interface Product {
 	price: string;
 	image: string;
 	symbol: string;
-	price_change_24h: string;
+	price_change_24h: number;
 
 }
 export interface collection {
@@ -88,7 +88,7 @@ function Wallet() {
 							price: el.market_data.current_price.usd,
 							image: el.image.small,
 							symbol: el.symbol,
-							price_change_24h: el.market_data.price_change_percentage_24h,
+							price_change_24h: parseInt(el.market_data.price_change_percentage_24h),
 						}
 						storage[objIndex].coins.push(data)
 					}
@@ -125,7 +125,7 @@ function Wallet() {
 				<h3>bem vindo a {wallet}</h3>
 
 				<div>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
-					<h4 key={idx}>{file.CoinName} <img src={file.image} alt="Coin Icon" /> <p>{file.price}</p> </h4>
+					<h4 key={idx}>{file.CoinName} <img src={file.image} alt="Coin Icon" /> <p>{file.price}</p> <Graph change={file.price_change_24h} /></h4>
 
 				))) : <h2>Não achamos nada</h2>} </div>
 			</div>
