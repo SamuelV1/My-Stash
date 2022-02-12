@@ -88,7 +88,9 @@ function Wallet() {
 							price: el.market_data.current_price.usd,
 							image: el.image.small,
 							symbol: el.symbol,
-							price_change_24h: parseInt(el.market_data.price_change_percentage_24h),
+							// wtf is this why i done this lord i'm so sorry for this
+							price_change_24h: parseInt(parseInt(el.market_data.price_change_percentage_24h).toFixed(2)),
+							// string to number then fix the number but turns into string then turns into number again
 						}
 						storage[objIndex].coins.push(data)
 					}
