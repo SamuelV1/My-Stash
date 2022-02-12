@@ -11,7 +11,7 @@ ReactDOM.render(
         </Route>
         <Route  path="/:wallet" element={<Wallet />}>
         </Route> 
-        <Route  path="/gph" element={<Graph />}>
+        <Route  path="/gph" element={<Graph change={1} />}>
         </Route>
       </Routes>
     </BrowserRouter>,

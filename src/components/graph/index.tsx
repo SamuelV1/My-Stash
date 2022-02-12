@@ -32,8 +32,8 @@ export const options = {
         color: "#382842",
       },
       ticks: {
-          beginAtZero: true,
-          display: false
+        beginAtZero: true,
+        display: false
       }
     },
     xAxes: {
@@ -42,7 +42,7 @@ export const options = {
         color: "#382842"
       },
       ticks: {
-          display: false
+        display: false
       }
     },
   },
@@ -57,26 +57,35 @@ export const options = {
   },
 };
 
-const labels = ['old',"", ""];
+const labels = ['old', "", ""];
 
 export const data = {
   labels,
   datasets: [
     {
-      data: [40,40,10],
+      data: [40, 40, 10],
       borderColor: '#df7c05',
       backgroundColor: 'rgba(153, 202, 5, 0.5)',
     },
     {
-    
-      data: [40,30,5],
+      data: [40, 30, 5],
       borderColor: '#df7c05',
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
   ],
 };
 
-export function Graph() {
+export function Graph(props: any) {
+   const data = {
+    labels,
+    datasets: [
+      {
+        data: [0, 1, props.change],
+        borderColor: '#df7c05',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
   return <Line options={options} data={data} />;
 }
 
