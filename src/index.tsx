@@ -7,7 +7,10 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: #1b173b;
+    background: rgb(27,26,73);
+background: linear-gradient(135deg, rgba(27,26,73,1) 5%, rgba(0,0,0,1) 92%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: snow;
   }
 `

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useParams } from 'react-router-dom';
 // style import
-import {Container,Form,FormContainer,SubmitButton} from './style'
+import {Container,Form,FormContainer,SubmitButton,Testetexto} from './style'
 
 
 type RoomParams = {
@@ -132,8 +132,9 @@ function Wallet() {
 				<h3>bem vindo a {wallet}</h3>
 
 				<Container>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
-					// graph sucks lol who made this XD
-					<h4 key={idx}><div><img src={file.image} alt="Coin Icon" /></div> <div> <p>{file.CoinName}</p> <p className='Symbol'>{file.CoinSymbol}</p></div> <div><p>{file.price}</p> <p>{file.price_change_24h}</p></div></h4>
+					
+
+					<h4 key={idx}><div><img src={file.image} alt="Coin Icon" /></div> <div> <p>{file.CoinName}</p> <p className='Symbol'>{file.CoinSymbol}</p></div> <div><p>${file.price}</p> <Testetexto emphasized={file.price_change_24h}>{file.price_change_24h}</Testetexto></div></h4>
 
 				))) : <h2>Não achamos nada</h2>}  </Container>
 			</div>

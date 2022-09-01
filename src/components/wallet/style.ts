@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 
 export const emptyHandler = styled.h2`
 background-color: black;
@@ -8,7 +8,7 @@ export const Container = styled.div`
 display: flex;
 flex-wrap: wrap;
 flex-direction: column;
-align-items: flex-end;
+align-items: flex-start;
 color: snow;
 font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 .Symbol{
@@ -19,15 +19,30 @@ img{
     border-radius: 50%;
 }
 h4{
+    margin: 5px;
     display: flex;
+    background: rgba(255, 255, 255, 0.09);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+border: 1px solid rgba(255, 255, 255, 0.15);
 }
 div{
     margin-right: 15px;
+    margin: 15px;
 }
 p{
     margin: 1px;
+    
 }
 `
+
+export const Testetexto = styled("p")<{emphasized: number}>`
+
+   color: ${props => props.emphasized >= 0 ? "#abe0aa" : "#fc9688"};
+
+`;
 
 export const FormContainer = styled.div`
 display: flex;
