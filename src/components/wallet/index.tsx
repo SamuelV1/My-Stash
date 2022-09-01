@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useParams } from 'react-router-dom';
 // style import
-import {Container} from './style'
+import {Container,Form,FormContainer,SubmitButton} from './style'
 
 
 type RoomParams = {
@@ -11,6 +11,7 @@ type RoomParams = {
 }
 export interface Product {
 	CoinName: string;
+	CoinSymbol: string;
 	price: string;
 	image: string;
 	symbol: string;
@@ -86,11 +87,12 @@ function Wallet() {
 					} else {
 						const data: Product = {
 							CoinName: el.name,
+							CoinSymbol: el.symbol,
 							price: el.market_data.current_price.usd,
 							image: el.image.small,
 							symbol: el.symbol,
 							// wtf is this why i done this lord i'm so sorry for this
-							price_change_24h: el.market_data.price_change_percentage_24h.toString(),
+							price_change_24h: el.market_data.price_change_percentage_24h,
 							// string to number then fix the number but turns into string then turns into number again
 						}
 						storage[objIndex].coins.push(data)
@@ -110,7 +112,8 @@ function Wallet() {
 
 	return (
 		<div className="App">
-			<form onSubmit={addCoin}>
+			<Form onSubmit={addCoin}>
+				<FormContainer> 
 				<input
 					required
 					placeholder='Coin ID'
@@ -118,18 +121,19 @@ function Wallet() {
 					name='coin'
 
 				/>
-				<label htmlFor='coin'> you can find coins id in <a href='google.com'>CoinGecko</a> </label>
-				<input
+				<label htmlFor='coin'>find the id in<a href='google.com'>CoinGecko</a> </label>
+				</FormContainer>
+				<SubmitButton
 					type='submit'
-					value='pesquisar'
+					value='find'
 				/>
-			</form>
+			</Form>
 			<div>
 				<h3>bem vindo a {wallet}</h3>
 
 				<Container>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
 					// graph sucks lol who made this XD
-					<h4 key={idx}>{file.CoinName} <div><img src={file.image} alt="Coin Icon" /></div> <p>{file.price}</p>{file.price_change_24h}</h4>
+					<h4 key={idx}><div><img src={file.image} alt="Coin Icon" /></div> <div> <p>{file.CoinName}</p> <p className='Symbol'>{file.CoinSymbol}</p></div> <div><p>{file.price}</p> <p>{file.price_change_24h}</p></div></h4>
 
 				))) : <h2>Não achamos nada</h2>}  </Container>
 			</div>
