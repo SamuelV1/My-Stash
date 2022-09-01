@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
 import { useParams } from 'react-router-dom';
-// interfaces import
-import {Graph} from "../graph/index"
+// style import
+import {Container} from './style'
+
 
 type RoomParams = {
 	wallet: string;
@@ -89,7 +90,7 @@ function Wallet() {
 							image: el.image.small,
 							symbol: el.symbol,
 							// wtf is this why i done this lord i'm so sorry for this
-							price_change_24h: parseInt(parseInt(el.market_data.price_change_percentage_24h).toFixed(2)),
+							price_change_24h: el.market_data.price_change_percentage_24h.toString(),
 							// string to number then fix the number but turns into string then turns into number again
 						}
 						storage[objIndex].coins.push(data)
@@ -126,10 +127,11 @@ function Wallet() {
 			<div>
 				<h3>bem vindo a {wallet}</h3>
 
-				<div>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
-					<h4 key={idx}>{file.CoinName} <img src={file.image} alt="Coin Icon" /> <p>{file.price}</p> <Graph change={file.price_change_24h} /></h4>
+				<Container>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
+					// graph sucks lol who made this XD
+					<h4 key={idx}>{file.CoinName} <div><img src={file.image} alt="Coin Icon" /></div> <p>{file.price}</p>{file.price_change_24h}</h4>
 
-				))) : <h2>Não achamos nada</h2>} </div>
+				))) : <h2>Não achamos nada</h2>}  </Container>
 			</div>
 		</div>
 	);

@@ -4,7 +4,7 @@ import localforage from 'localforage'
 import { v4 as uuidv4 } from 'uuid'
 // interface imports 
 import {Product} from '../components/wallet/index'
-import {Graph} from '../components/graph/index'
+
 interface collection {
   WalletName: string,
   id: string,
