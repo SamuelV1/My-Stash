@@ -12,51 +12,71 @@ type RoomParams = {
 export interface Product {
 	CoinName: string;
 	CoinSymbol: string;
-	price: string;
+	price: number;
 	image: string;
 	symbol: string;
 	price_change_24h: number;
 
 }
+
 export interface collection {
 	WalletName: string,
 	id: string,
 	coins: Product[],
 }
 
-const initialwallet = {
-	WalletName: "",
-	id: "0",
-	coins: []
-}
+const initialtest = [{ CoinName: "Bitcoin", CoinSymbol: "btc", price: 20066, image: "https://assets.coingecko.com/coins/images/1/small/bitcoin.png?1547033579", symbol: "btc", price_change_24h: 1.1357 }]
 
 
 function Wallet() {
 
-	const [Coins, setCoins] = useState<collection[]>([initialwallet])
-
-
-	const [localWallet, setLocal] = useState<collection>(initialwallet)
+	const [dummyshow, setdummy] = useState<Product[]>(initialtest)
 
 	const { wallet } = useParams<RoomParams>();
 
 
-
-
 	useEffect(() => {
 		async function start() {
-			const StoreData = await localforage.getItem<collection[]>('stashWallet')
-			if (StoreData) {
-				let MyWallet = StoreData.find(o => o.id === wallet);
-				if (MyWallet) {
-					setLocal(MyWallet)
-				}
-				setCoins(StoreData)
+            const StoreData = await localforage.getItem<collection[]>('stashWallet')
+            if (StoreData) {
+                let MyWallet = StoreData.find(o => o.id === wallet);
+                if (MyWallet) {
+                    MyWallet.coins.forEach(async function (arrayItem) {
+                        console.log(arrayItem)
+                        await fetch(`https://api.coingecko.com/api/v3/coins/${arrayItem.CoinName}`)
+                            .then(response => response.json())
+                            .then(el => {
+                                if (el.error) {
+                                    alert("coin não encontrado")
+                                    console.log(el)
+                                } else {
+                                    const data: Product = {
+                                        CoinName: el.id,
+                                        CoinSymbol: el.symbol,
+                                        price: el.market_data.current_price.usd,
+                                        image: el.image.small,
+                                        symbol: el.symbol,
+                                        // wtf is this why i done this lord i'm so sorry for this
+                                        price_change_24h: el.market_data.price_change_percentage_24h,
+                                        // string to number then fix the number but turns into string then turns into number again
+                                    }
+                                    
+                                    if (dummyshow) {
+                                        // @ts-ignore
+                                        setdummy(dummyshow => [...dummyshow, data])
+                                        // @ts-ignore
+                                    }
+                                   
+                                }
+                            })
+                    })
 
-			}
+                }
 
-		}
 
+            }
+
+        }
 		start()
 
 	}, [])
@@ -73,9 +93,13 @@ function Wallet() {
 
 		// 
 		const StoreData = await localforage.getItem<collection[]>('stashWallet')
-		let objIndex = Coins.findIndex((obj => obj.id === wallet));
+
+		  // @ts-ignore
+		let objIndex = StoreData.findIndex(o => o.id === wallet);
+		
 		if (StoreData) {
 			// add the new coin to the localStorage
+		
 			let storage = StoreData
 			// remember to add a error handler
 			await fetch(`https://api.coingecko.com/api/v3/coins/${CoinName}`)
@@ -86,7 +110,7 @@ function Wallet() {
 						console.log(el)
 					} else {
 						const data: Product = {
-							CoinName: el.name,
+							CoinName: el.id,
 							CoinSymbol: el.symbol,
 							price: el.market_data.current_price.usd,
 							image: el.image.small,
@@ -96,6 +120,7 @@ function Wallet() {
 							// string to number then fix the number but turns into string then turns into number again
 						}
 						storage[objIndex].coins.push(data)
+						
 					}
 				})
 
@@ -103,8 +128,8 @@ function Wallet() {
 			// add the coin in the local wallet
 			let MyWallet = StoreData.find(o => o.id === wallet);
 			if (MyWallet) {
-				setLocal(MyWallet)
-
+				
+				setdummy(MyWallet.coins)
 			}
 		}
 
@@ -131,7 +156,7 @@ function Wallet() {
 			<div>
 				<h3>bem vindo a {wallet}</h3>
 
-				<Container>{localWallet.coins.length >= 1 ? (localWallet.coins.map((file: Product, idx) => (
+				<Container>{dummyshow.length >= 1 ? (dummyshow.map((file: Product, idx) => (
 					
 
 					<h4 key={idx}><div><img src={file.image} alt="Coin Icon" /></div> <div> <p>{file.CoinName}</p> <p className='Symbol'>{file.CoinSymbol}</p></div> <div><p>${file.price}</p> <Testetexto emphasized={file.price_change_24h}>{file.price_change_24h}</Testetexto></div></h4>

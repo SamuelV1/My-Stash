@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom'
 import App from './pages/App';
 import Wallet from './components/wallet'
 import { createGlobalStyle } from 'styled-components'
+import DummyWallet from './components/dummywallet';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -24,7 +25,9 @@ ReactDOM.render(
         </Route>
         <Route  path="/:wallet" element={<Wallet />}>
         </Route> 
-       
+        <Route path="/lulu" element={<DummyWallet />}>
+
+        </Route>
       </Routes>
     </BrowserRouter>,
   document.getElementById('root')
